@@ -3,6 +3,7 @@ import { getTasks } from '../services/taskService';
 import { Column } from './Column';
 import type { Status, Task } from '../types/task';
 import { useMemo } from 'react';
+import { CreateTaskForm } from './CreateTaskForm';
 
 export function KanbanBoard() {
   const { data: tasks, error, isLoading } = useQuery({
@@ -29,7 +30,8 @@ export function KanbanBoard() {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Task Manager</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <CreateTaskForm />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
         <Column title="To Do" tasks={columns.TODO ?? []} />
         <Column title="In Progress" tasks={columns.DOING ?? []} />
         <Column title="Done" tasks={columns.DONE ?? []} />
