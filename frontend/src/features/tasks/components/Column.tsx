@@ -4,15 +4,24 @@ import { TaskCard } from './TaskCard';
 interface ColumnProps {
   title: string;
   tasks: Task[];
+  onEditTask: (task: Task) => void;
 }
 
-export function Column({ title, tasks }: ColumnProps) {
+const columnStyles = {
+  'To Do': 'border-t-red-500',
+  'In Progress': 'border-t-yellow-500',
+  'Done': 'border-t-green-500',
+}
+
+export function Column({ title, tasks, onEditTask }: ColumnProps) {
   return (
-    <div className="bg-gray-100 p-4 rounded-lg shadow-inner">
-      <h2 className="text-xl font-bold mb-4 text-gray-700">{title}</h2>
-      <div className="space-y-4">
+    <div className={`bg-slate-50 rounded-lg shadow-md ${columnStyles[title as keyof typeof columnStyles]}`}>
+      <div className="p-4">
+        <h2 className="text-lg font-semibold text-slate-700 uppercase tracking-wider">{title} ({tasks.length})</h2>
+      </div>
+      <div className="p-4 space-y-4">
         {tasks.map(task => (
-          <TaskCard key={task.id} task={task} />
+          <TaskCard key={task.id} task={task} onEdit={onEditTask} />
         ))}
       </div>
     </div>
