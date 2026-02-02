@@ -31,12 +31,7 @@ export function Column({ title, tasks, onEditTask }: ColumnProps) {
         {tasks.map(task => (
           <TaskCard key={task.id} task={task} onEdit={onEditTask} />
         ))}
-        
-        {tasks.length === 0 && (
-          <div className="h-24 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center text-slate-400 text-xs italic">
-            Drop tasks here
-          </div>
-        )}
+
       </div>
     </div>
   );
