@@ -1,9 +1,11 @@
+import { KanbanBoard } from './features/tasks/components/KanbanBoard';
+
 function App() {
   return (
-    <div>
-      <h1>Task Manager</h1>
-    </div>
-  )
+    <main className="bg-slate-100 min-h-screen">
+      <KanbanBoard />
+    </main>
+  );
 }
 
-export default App
+export default App;
