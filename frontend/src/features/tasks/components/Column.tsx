@@ -7,22 +7,36 @@ interface ColumnProps {
   onEditTask: (task: Task) => void;
 }
 
-const columnStyles = {
-  'To Do': 'border-t-red-500',
-  'In Progress': 'border-t-yellow-500',
-  'Done': 'border-t-green-500',
-}
+const columnHeaderStyles = {
+  'To Do': 'bg-red-50 text-red-700 border-red-100',
+  'In Progress': 'bg-yellow-50 text-yellow-700 border-yellow-100',
+  'Done': 'bg-green-50 text-green-700 border-green-100',
+};
 
 export function Column({ title, tasks, onEditTask }: ColumnProps) {
+  const headerStyle = columnHeaderStyles[title as keyof typeof columnHeaderStyles] || 'bg-slate-100';
+
   return (
-    <div className={`bg-slate-50 rounded-lg shadow-md ${columnStyles[title as keyof typeof columnStyles]}`}>
-      <div className="p-4">
-        <h2 className="text-lg font-semibold text-slate-700 uppercase tracking-wider">{title} ({tasks.length})</h2>
+    <div className="flex flex-col h-full bg-slate-100/50 rounded-2xl border border-slate-200/60 p-2 min-h-[500px]">
+      <div className={`flex items-center justify-between p-3 mb-2 rounded-xl border ${headerStyle}`}>
+        <h2 className="text-sm font-bold uppercase tracking-wider">
+          {title}
+        </h2>
+        <span className="bg-white/50 px-2 py-0.5 rounded-md text-xs font-bold border border-black/5">
+          {tasks.length}
+        </span>
       </div>
-      <div className="p-4 space-y-4">
+
+      <div className="flex-1 space-y-3 p-1 overflow-y-auto custom-scrollbar">
         {tasks.map(task => (
           <TaskCard key={task.id} task={task} onEdit={onEditTask} />
         ))}
+        
+        {tasks.length === 0 && (
+          <div className="h-24 border-2 border-dashed border-slate-200 rounded-xl flex items-center justify-center text-slate-400 text-xs italic">
+            Drop tasks here
+          </div>
+        )}
       </div>
     </div>
   );
