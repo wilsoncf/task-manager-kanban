@@ -1,11 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
 import { getTasks } from '../services/taskService';
+import { Column } from './Column';
+import type { Status, Task } from '../types/task';
+import { useMemo } from 'react';
 
 export function KanbanBoard() {
   const { data: tasks, error, isLoading } = useQuery({
     queryKey: ['tasks'],
     queryFn: getTasks,
   });
+
+  const columns = useMemo(() => {
+    const groupedTasks = (tasks ?? []).reduce((acc, task) => {
+      acc[task.status] = [...(acc[task.status] ?? []), task];
+      return acc;
+    }, {} as Record<Status, Task[]>);
+    return groupedTasks;
+  }, [tasks]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -18,10 +29,11 @@ export function KanbanBoard() {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Task Manager</h1>
-      <div className="grid grid-cols-3 gap-4">
-        {/* Columns will go here */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Column title="To Do" tasks={columns.TODO ?? []} />
+        <Column title="In Progress" tasks={columns.DOING ?? []} />
+        <Column title="Done" tasks={columns.DONE ?? []} />
       </div>
-      <pre>{JSON.stringify(tasks, null, 2)}</pre>
     </div>
   );
 }
